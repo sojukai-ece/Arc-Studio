@@ -1,0 +1,9 @@
+{
+  "bookings": [
+    { "id": "1", "clientName": "Sarah Chen", "date": "2024-05-15", "hours": 6, "revenue": 1200, "costs": 300, "status": "completed", "type": "graduation" },
+    { "id": "2", "clientName": "TechStart Inc", "date": "2024-05-22", "hours": 8, "revenue": 1800, "costs": 400, "status": "confirmed", "type": "corporate" },
+    { "id": "3", "clientName": "Martinez Family", "date": "2024-06-01", "hours": 4, "revenue": 800, "costs": 200, "status": "confirmed", "type": "portrait" },
+    { "id": "4", "clientName": "Green Valley HS", "date": "2024-06-10", "hours": 10, "revenue": 2500, "costs": 600, "status": "confirmed", "type": "graduation" },
+    { "id": "5", "clientName": "River Oaks Event", "date": "2024-06-15", "hours": 12, "revenue": 3000, "costs": 700, "status": "confirmed", "type": "wedding" }
+  ]
+}
