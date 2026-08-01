@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import type { ReactElement } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -38,7 +39,7 @@ export function Microchip() {
   const pinSpacing = 0.12;
   const chipSize = 0.55;
 
-  const pins: JSX.Element[] = [];
+  const pins: ReactElement[] = [];
   for (let i = 0; i < pinCount; i++) {
     const offset = (i - (pinCount - 1) / 2) * pinSpacing;
     // Bottom pins

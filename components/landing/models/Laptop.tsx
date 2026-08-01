@@ -136,7 +136,7 @@ export function Laptop() {
 
         {/* Data particles — confined to screen projection area */}
         <group position={[0, 0.1, 0.4]}>
-          <DataParticles count={140} opacity={particleOpacity.current} />
+          <DataParticles count={140} />
         </group>
       </group>
     </group>
