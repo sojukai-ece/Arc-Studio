@@ -107,7 +107,7 @@ export function ValueProps() {
       id="value-props"
       className="section"
       aria-labelledby="value-props-heading"
-      style={{ background: 'linear-gradient(180deg, #0A0A0A 0%, #0D0D12 100%)' }}
+      style={{ background: 'transparent' }} // FIX: Removed the solid linear gradient
     >
       <div className="container">
         {/* Section header */}

@@ -63,7 +63,7 @@ export function Timeline() {
       className="section"
       aria-labelledby="timeline-heading"
       style={{
-        background: 'linear-gradient(180deg, #0D0D12 0%, #0A0A0A 100%)',
+        background: 'transparent', // FIX: Removed the solid linear gradient
         position: 'relative',
       }}
     >

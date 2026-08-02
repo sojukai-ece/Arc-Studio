@@ -1,24 +1,7 @@
 'use client';
 
-import { useRef, Suspense } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { Microchip } from '../models/Microchip';
-
-function MicrochipCanvas() {
-  return (
-    <Canvas
-      camera={{ position: [0, 1.5, 3.5], fov: 40 }}
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: true }}
-      style={{ width: 280, height: 280 }}
-    >
-      <Suspense fallback={null}>
-        <Microchip />
-      </Suspense>
-    </Canvas>
-  );
-}
 
 export function Footer() {
   const ref = useRef<HTMLDivElement>(null);
@@ -38,7 +21,7 @@ export function Footer() {
       className="section"
       aria-labelledby="footer-headline"
       style={{
-        background: 'linear-gradient(180deg, #0A0A0A 0%, #080810 100%)',
+        background: 'transparent',
         borderTop: '1px solid rgba(255,255,255,0.05)',
         paddingBottom: 80,
       }}
@@ -48,7 +31,6 @@ export function Footer() {
         <div className="grid items-center gap-16" style={{ gridTemplateColumns: '1fr auto' }}>
           {/* Left: Copy */}
           <div>
-            {/* Eyebrow */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -64,7 +46,6 @@ export function Footer() {
               </span>
             </motion.div>
 
-            {/* Headline */}
             <motion.h2
               id="footer-headline"
               initial={{ opacity: 0, y: 24 }}
@@ -78,7 +59,6 @@ export function Footer() {
               <span className="gradient-text">Start Strategizing.</span>
             </motion.h2>
 
-            {/* Subheadline */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -90,7 +70,6 @@ export function Footer() {
               who value privacy and profit above all else.
             </motion.p>
 
-            {/* Target audience tags */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
@@ -112,7 +91,6 @@ export function Footer() {
               ))}
             </motion.div>
 
-            {/* Final CTA buttons */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -155,7 +133,7 @@ export function Footer() {
             </motion.div>
           </div>
 
-          {/* Right: 3D Microchip */}
+          {/* Right: Empty Placeholder for Global 3D Microchip */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
@@ -163,22 +141,22 @@ export function Footer() {
             className="hidden md:flex flex-col items-center gap-3"
           >
             <div
-              className="relative"
+              className="relative flex items-center justify-center"
               style={{
                 background: 'radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%)',
                 borderRadius: '50%',
                 padding: 20,
+                width: 280,
+                height: 280,
               }}
             >
-              <Suspense fallback={null}>
-                <MicrochipCanvas />
-              </Suspense>
+              {/* The main 3D scene will overlay its microchip directly into this empty space */}
             </div>
             <span
               className="text-xs font-medium tracking-widest"
               style={{ color: 'rgba(0,229,255,0.4)', letterSpacing: '0.25em' }}
             >
-              ARC.STUDIO CORE
+              ARC STUDIO CORE
             </span>
           </motion.div>
         </div>
@@ -200,7 +178,7 @@ export function Footer() {
           </div>
 
           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-            © 2025 Arc.Studio. All rights reserved. Fully local. Fully private.
+            © 2025 Arc Studio. All rights reserved. Fully local. Fully private.
           </p>
 
           <div className="flex items-center gap-6">

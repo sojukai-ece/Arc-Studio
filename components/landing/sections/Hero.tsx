@@ -14,6 +14,7 @@ export function Hero() {
       id="hero"
       className="section bg-grid relative flex items-center justify-start min-h-screen"
       aria-labelledby="hero-headline"
+      style={{ background: 'transparent' }} // FIX: Enforce transparency here
     >
       {/* Radial glow behind 3D model */}
       <div
@@ -71,7 +72,7 @@ export function Hero() {
             maxWidth: 560,
           }}
         >
-          Meet Arc.Studio. The offline, localized AI decision engine that turns raw
+          Meet Arc Studio. The startup and business strategist, localized AI decision engine that turns raw
           inquiries into optimized profits—without ever connecting to the cloud.
         </motion.p>
 
@@ -151,7 +152,7 @@ export function Hero() {
           transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 5v14M5 12l7 7 7-7" />
+            <path d="M12 5v14M5 12l7 7-7-7" />
           </svg>
         </motion.div>
       </motion.div>
