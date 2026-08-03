@@ -52,6 +52,7 @@ body {
   object-fit: cover;
   opacity: 0;
   transform: scale(1.025);
+  will-change: opacity;
   transition: opacity 700ms ease;
 }
 
