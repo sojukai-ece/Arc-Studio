@@ -1,42 +1,54 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useScroll, useSpring, useMotionValueEvent } from 'framer-motion';
 
 const cloudinaryVideoUrl = process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO;
 
 export function ScrollVideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isReady, setIsReady] = useState(false);
+  const { scrollYProgress } = useScroll();
+  
+  // Create a smoothed version of the scroll progress for a "premium" feel
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
+  // Synchronize video currentTime with the smoothed scroll progress
+  useMotionValueEvent(smoothProgress, "change", (latest) => {
+    const video = videoRef.current;
+    if (!video || !video.duration || video.duration === Infinity) return;
+
+    const targetTime = latest * video.duration;
+    
+    // We update currentTime to match the scroll progress.
+    // Modern browsers handle frequent currentTime updates well if the video is buffered.
+    if (Number.isFinite(targetTime)) {
+      video.currentTime = targetTime;
+    }
+  });
+
+  // Handle initial sync and metadata loading
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    let animationFrame = 0;
-    const syncVideoToScroll = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-      const targetTime = progress * video.duration;
-
-      if (Number.isFinite(targetTime) && Math.abs(video.currentTime - targetTime) > 0.08) {
-        video.currentTime = targetTime;
+    const syncInitialTime = () => {
+      if (video.duration && Number.isFinite(video.duration)) {
+        video.currentTime = scrollYProgress.get() * video.duration;
       }
     };
-    const requestSync = () => {
-      cancelAnimationFrame(animationFrame);
-      animationFrame = requestAnimationFrame(syncVideoToScroll);
-    };
 
-    video.addEventListener('loadedmetadata', requestSync);
-    window.addEventListener('scroll', requestSync, { passive: true });
-    window.addEventListener('resize', requestSync);
-    return () => {
-      cancelAnimationFrame(animationFrame);
-      video.removeEventListener('loadedmetadata', requestSync);
-      window.removeEventListener('scroll', requestSync);
-      window.removeEventListener('resize', requestSync);
-    };
-  }, []);
+    if (video.readyState >= 1) {
+      syncInitialTime();
+    }
+
+    video.addEventListener('loadedmetadata', syncInitialTime);
+    return () => video.removeEventListener('loadedmetadata', syncInitialTime);
+  }, [scrollYProgress]);
 
   if (!cloudinaryVideoUrl) return <div className="video-fallback" aria-hidden="true" />;
 
@@ -48,7 +60,7 @@ export function ScrollVideoBackground() {
         src={cloudinaryVideoUrl}
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         onCanPlay={() => setIsReady(true)}
       />
       <div className="video-background__veil" />
@@ -56,3 +68,4 @@ export function ScrollVideoBackground() {
     </div>
   );
 }
+
