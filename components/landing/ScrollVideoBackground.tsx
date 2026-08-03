@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const cloudinaryVideoUrl = process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO_URL;
+const cloudinaryVideoUrl = process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO;
 
 export function ScrollVideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
