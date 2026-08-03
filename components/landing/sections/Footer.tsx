@@ -28,7 +28,7 @@ export function Footer() {
     >
       <div className="container">
         {/* Main CTA grid */}
-        <div className="grid items-center gap-16" style={{ gridTemplateColumns: '1fr auto' }}>
+        <div className="grid items-center gap-16" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
           {/* Left: Copy */}
           <div>
             <motion.div
@@ -133,32 +133,6 @@ export function Footer() {
             </motion.div>
           </div>
 
-          {/* Right: Empty Placeholder for Global 3D Microchip */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
-            className="hidden md:flex flex-col items-center gap-3"
-          >
-            <div
-              className="relative flex items-center justify-center"
-              style={{
-                background: 'radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%)',
-                borderRadius: '50%',
-                padding: 20,
-                width: 280,
-                height: 280,
-              }}
-            >
-              {/* The main 3D scene will overlay its microchip directly into this empty space */}
-            </div>
-            <span
-              className="text-xs font-medium tracking-widest"
-              style={{ color: 'rgba(0,229,255,0.4)', letterSpacing: '0.25em' }}
-            >
-              ARC STUDIO CORE
-            </span>
-          </motion.div>
         </div>
 
         {/* Bottom bar */}

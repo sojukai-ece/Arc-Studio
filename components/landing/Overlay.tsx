@@ -26,14 +26,14 @@ export function Overlay() {
           left: 0,
           right: 0,
           zIndex: 100,
-          padding: '0 32px',
-          height: 64,
+          padding: '0 clamp(20px, 4vw, 56px)',
+          height: 72,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           opacity: navOpacity,
           backdropFilter: `blur(${navBlur}px)`,
-          background: 'rgba(10,10,10,0.7)',
+          background: 'rgba(7, 9, 13, 0.56)',
           borderBottom: '1px solid rgba(255,255,255,0.05)',
         }}
       >
@@ -43,7 +43,7 @@ export function Overlay() {
             style={{ background: '#00E5FF', boxShadow: '0 0 8px #00E5FF' }}
           />
           <span className="font-bold text-sm" style={{ letterSpacing: '0.12em', color: '#FFFFFF' }}>
-            ARC.STUDIO
+            ARC/STUDIO
           </span>
         </div>
 
@@ -88,10 +88,12 @@ export function Overlay() {
         className="relative"
         style={{ zIndex: 10, pointerEvents: 'auto' }}
       >
-        <Hero />
-        <ValueProps />
-        <Timeline />
-        <Footer />
+        <div className="landing-shell">
+          <Hero />
+          <ValueProps />
+          <Timeline />
+          <Footer />
+        </div>
       </main>
     </>
   );

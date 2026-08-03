@@ -4,7 +4,6 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { useRef, useMemo, Suspense } from 'react';
 import * as THREE from 'three';
-import { Microchip } from './models/Microchip';
 
 // Global scroll progress store
 if (typeof window !== 'undefined') {
@@ -98,7 +97,6 @@ function VideoSceneContent() {
         ref={chipRef} 
         visible={false}
       >
-        <Microchip />
       </group>
     </>
   );
