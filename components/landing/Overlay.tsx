@@ -4,6 +4,9 @@ import { Hero } from './sections/Hero';
 import { ValueProps } from './sections/ValueProps';
 import { Timeline } from './sections/Timeline';
 import { Footer } from './sections/Footer';
+import { CommandCenter } from './sections/CommandCenter';
+import { Proof } from './sections/Proof';
+import { StoryRail } from './StoryRail';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 export function Overlay() {
@@ -49,8 +52,9 @@ export function Overlay() {
 
         <div className="hidden md:flex items-center gap-8">
           {[
+            { href: '#system', label: 'System' },
             { href: '#value-props', label: 'Features' },
-            { href: '#how-it-works', label: 'How It Works' },
+            { href: '#decision', label: 'Principles' },
             { href: '#enterprise-cta', label: 'Deploy' },
           ].map((item) => (
             <a
@@ -81,6 +85,7 @@ export function Overlay() {
           Deploy Locally
         </button>
       </motion.nav>
+      <StoryRail />
 
       {/* Scrollable overlay content */}
       <main
@@ -90,8 +95,10 @@ export function Overlay() {
       >
         <div className="landing-shell">
           <Hero />
+          <CommandCenter />
           <ValueProps />
           <Timeline />
+          <Proof />
           <Footer />
         </div>
       </main>
