@@ -74,7 +74,7 @@ function VideoSceneContent() {
       const s = THREE.MathUtils.lerp(0.1, 0.35, Math.min(1, chipT));
       chipRef.current.scale.setScalar(s);
 
-      // FIX: Adjusted from 0.65 to 0.55 to pull the chip to the left and avoid cutoff
+      // Adjusted from 0.65 to 0.55 to pull the chip to the left and avoid cutoff
       const rightEdgeOffset = (viewport.width / 2) * 0.55;
       const bottomEdgeOffset = -(viewport.height / 2) * 0.4;
       
