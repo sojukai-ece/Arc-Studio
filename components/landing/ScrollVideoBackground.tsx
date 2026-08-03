@@ -1,12 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useScroll, useSpring, useMotionValueEvent } from 'framer-motion';
 
 const cloudinaryVideoUrl = process.env.NEXT_PUBLIC_CLOUDINARY_VIDEO;
+const MIN_SEEK_INTERVAL = 1 / 30;
 
 export function ScrollVideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const pendingTimeRef = useRef<number | null>(null);
+  const lastSeekTimeRef = useRef<number | null>(null);
   const [isReady, setIsReady] = useState(false);
   const { scrollYProgress } = useScroll();
   
@@ -17,18 +21,36 @@ export function ScrollVideoBackground() {
     restDelta: 0.001
   });
 
-  // Synchronize video currentTime with the smoothed scroll progress
-  useMotionValueEvent(smoothProgress, "change", (latest) => {
+  // Browsers cannot reliably decode a new video frame for every scroll event.
+  // Batch updates into animation frames and skip imperceptibly small seeks.
+  const queueSeek = useCallback((progress: number) => {
     const video = videoRef.current;
-    if (!video || !video.duration || video.duration === Infinity) return;
+    if (!video || !Number.isFinite(video.duration)) return;
 
-    const targetTime = latest * video.duration;
-    
-    // We update currentTime to match the scroll progress.
-    // Modern browsers handle frequent currentTime updates well if the video is buffered.
-    if (Number.isFinite(targetTime)) {
-      video.currentTime = targetTime;
-    }
+    pendingTimeRef.current = progress * video.duration;
+    if (animationFrameRef.current !== null) return;
+
+    animationFrameRef.current = requestAnimationFrame(() => {
+      animationFrameRef.current = null;
+      const targetTime = pendingTimeRef.current;
+      pendingTimeRef.current = null;
+
+      if (targetTime === null || !videoRef.current || !Number.isFinite(targetTime)) return;
+      if (
+        lastSeekTimeRef.current !== null &&
+        Math.abs(targetTime - lastSeekTimeRef.current) < MIN_SEEK_INTERVAL
+      ) {
+        return;
+      }
+
+      videoRef.current.currentTime = targetTime;
+      lastSeekTimeRef.current = targetTime;
+    });
+  }, []);
+
+  // Synchronize video currentTime with the smoothed scroll progress.
+  useMotionValueEvent(smoothProgress, "change", (latest) => {
+    queueSeek(latest);
   });
 
   // Handle initial sync and metadata loading
@@ -38,7 +60,9 @@ export function ScrollVideoBackground() {
 
     const syncInitialTime = () => {
       if (video.duration && Number.isFinite(video.duration)) {
-        video.currentTime = scrollYProgress.get() * video.duration;
+        const initialTime = scrollYProgress.get() * video.duration;
+        video.currentTime = initialTime;
+        lastSeekTimeRef.current = initialTime;
       }
     };
 
@@ -47,7 +71,13 @@ export function ScrollVideoBackground() {
     }
 
     video.addEventListener('loadedmetadata', syncInitialTime);
-    return () => video.removeEventListener('loadedmetadata', syncInitialTime);
+    return () => {
+      video.removeEventListener('loadedmetadata', syncInitialTime);
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
   }, [scrollYProgress]);
 
   if (!cloudinaryVideoUrl) return <div className="video-fallback" aria-hidden="true" />;
@@ -68,4 +98,3 @@ export function ScrollVideoBackground() {
     </div>
   );
 }
-
